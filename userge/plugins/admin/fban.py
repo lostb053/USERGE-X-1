@@ -69,14 +69,13 @@ async def delfed_(message: Message):
         chat_id = chat_.id
         out = f"{chat_.title}\nChat ID: {chat_id}\n"
         found = await FED_LIST.find_one({"chat_id": chat_id})
-        if found:
-            msg_ = out + f"Successfully Removed Fed: **{found['fed_name']}**"
-            await message.edit(msg_, del_in=7)
-            await FED_LIST.delete_one(found)
-        else:
+        if not found:
             return await message.err(
                 out + "**Does't exist in your Fed List !**", del_in=7
             )
+        msg_ = out + f"Successfully Removed Fed: **{found['fed_name']}**"
+        await message.edit(msg_, del_in=7)
+        await FED_LIST.delete_one(found)
     await CHANNEL.log(msg_)
 
 
@@ -142,12 +141,12 @@ async def fban_(message: Message):
         )
     await message.edit(fban_arg[2])
 
-    if len(failed) != 0:
+    if not failed:
+        status = f"Success! Fbanned in `{total}` feds."
+    else:
         status = f"Failed to fban in {len(failed)}/{total} feds.\n"
         for i in failed:
             status += "• " + i + "\n"
-    else:
-        status = f"Success! Fbanned in `{total}` feds."
     msg_ = (
         fban_arg[3].format(user_.mention)
         + f"\n**Reason:** {reason}\n**Status:** {status}"
@@ -208,12 +207,12 @@ async def unfban_(message: Message):
         )
     await message.edit(fban_arg[2])
 
-    if len(failed) != 0:
+    if not failed:
+        status = f"Success! Un-Fbanned in `{total}` feds."
+    else:
         status = f"Failed to un-fban in `{len(failed)}/{total}` feds.\n"
         for i in failed:
             status += "• " + i + "\n"
-    else:
-        status = f"Success! Un-Fbanned in `{total}` feds."
     msg_ = fban_arg[3].format(user_.mention) + f"\n**Status:** {status}"
     await message.edit(msg_)
     await CHANNEL.log(msg_)
@@ -229,9 +228,11 @@ async def unfban_(message: Message):
 )
 async def fban_lst_(message: Message):
     """List all connected Feds."""
-    out = ""
-    async for data in FED_LIST.find():
-        out += f"• <i>ID<b/i>: `{data['chat_id']}`\n  Fed: <b>{data['fed_name']}</b>\n"
+    out = "".join(
+        f"• <i>ID<b/i>: `{data['chat_id']}`\n  Fed: <b>{data['fed_name']}</b>\n"
+        for data in FED_LIST.find()
+    )
+
     await message.edit_or_send_as_file(
         "**Connected federations:**\n\n" + out
         if out
