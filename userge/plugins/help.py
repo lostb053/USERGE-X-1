@@ -745,7 +745,15 @@ if userge.has_bot:
                     await get_alive_()
 
                 if MEDIA_URL:
-                    if MEDIA_TYPE == "url_gif":
+                    if MEDIA_TYPE == "tg_image":
+                        results.append(
+                            InlineQueryResultCachedPhoto(
+                                file_id=MEDIA_URL,
+                                caption=alive_info,
+                                reply_markup=InlineKeyboardMarkup(buttons),
+                            )
+                        )
+                    elif MEDIA_TYPE == "url_gif":
                         results.append(
                             InlineQueryResultAnimation(
                                 animation_url=MEDIA_URL,
@@ -757,14 +765,6 @@ if userge.has_bot:
                         results.append(
                             InlineQueryResultPhoto(
                                 photo_url=MEDIA_URL,
-                                caption=alive_info,
-                                reply_markup=InlineKeyboardMarkup(buttons),
-                            )
-                        )
-                    elif MEDIA_TYPE == "tg_image":
-                        results.append(
-                            InlineQueryResultCachedPhoto(
-                                file_id=MEDIA_URL,
                                 caption=alive_info,
                                 reply_markup=InlineKeyboardMarkup(buttons),
                             )
@@ -1065,52 +1065,51 @@ if userge.has_bot:
                                     )
                                 )
 
-            if str_y[0].lower() == "stylish":
-                if len(str_y) == 2:
-                    results = []
-                    input_text = str_y[1]
-                    font_names = [
-                        "serif",
-                        "sans",
-                        "sans_i",
-                        "serif_i",
-                        "medi_b",
-                        "medi",
-                        "double",
-                        "cursive_b",
-                        "cursive",
-                        "bigsmall",
-                        "reverse",
-                        "circle",
-                        "circle_b",
-                        "mono",
-                        "square_b",
-                        "square",
-                        "smoth",
-                        "goth",
-                        "wide",
-                        "web",
-                        "weeb",
-                        "weeeb",
-                    ]
-                    for f_name in font_names:
-                        styled_str = await font_gen(f_name, input_text)
-                        results.append(
-                            InlineQueryResultArticle(
-                                title=f_name.upper(),
-                                input_message_content=InputTextMessageContent(
-                                    styled_str
-                                ),
-                                description=styled_str,
-                            )
+            if str_y[0].lower() == "stylish" and len(str_y) == 2:
+                results = []
+                input_text = str_y[1]
+                font_names = [
+                    "serif",
+                    "sans",
+                    "sans_i",
+                    "serif_i",
+                    "medi_b",
+                    "medi",
+                    "double",
+                    "cursive_b",
+                    "cursive",
+                    "bigsmall",
+                    "reverse",
+                    "circle",
+                    "circle_b",
+                    "mono",
+                    "square_b",
+                    "square",
+                    "smoth",
+                    "goth",
+                    "wide",
+                    "web",
+                    "weeb",
+                    "weeeb",
+                ]
+                for f_name in font_names:
+                    styled_str = await font_gen(f_name, input_text)
+                    results.append(
+                        InlineQueryResultArticle(
+                            title=f_name.upper(),
+                            input_message_content=InputTextMessageContent(
+                                styled_str
+                            ),
+                            description=styled_str,
                         )
-                    await inline_query.answer(
-                        results=results,
-                        cache_time=1,
-                        switch_pm_text="Available Commands",
-                        switch_pm_parameter="inline",
                     )
-                    return
+                await inline_query.answer(
+                    results=results,
+                    cache_time=1,
+                    switch_pm_text="Available Commands",
+                    switch_pm_parameter="inline",
+                )
+                return
 
             if str_x[0].lower() == "secret" and len(str_x) == 3:
                 user_name = str_x[1]
