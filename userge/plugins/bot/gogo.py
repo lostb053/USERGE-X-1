@@ -78,13 +78,15 @@ class Anime:
     @staticmethod
     async def get_eps(link: str):
         page = await Anime._get_html(link, add_pre=False)
-        end_ = page.find("ul", {"id": "episode_page"}).findAll("li")[-1].a.get("ep_end")
-        return end_
+        return (
+            page.find("ul", {"id": "episode_page"})
+            .findAll("li")[-1]
+            .a.get("ep_end")
+        )
 
     @staticmethod
     def _get_name(link: str):
-        name_ = "/" + (link.rsplit("/", 1))[1]
-        return name_
+        return "/" + (link.rsplit("/", 1))[1]
 
     @staticmethod
     async def get_quality(url: str, episode: int, key_: str):
@@ -189,12 +191,12 @@ if userge.has_bot:
         pages = key_data.get("page")
         p_len = len(pages)
         del_back, del_next = False, False
-        if direction == "next":
-            page = pos + 1
-            del_next = (page + 1) == p_len
-        elif direction == "back":
+        if direction == "back":
             del_back = pos == 1
             page = pos - 1
+        elif direction == "next":
+            page = pos + 1
+            del_next = (page + 1) == p_len
         else:
             return
         button_base = [
