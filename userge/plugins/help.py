@@ -980,14 +980,11 @@ if userge.has_bot:
                     with open(inline_db_path, "r") as data_file:
                         view_db = ujson.load(data_file)
 
-                    data_count_n = 1
                     reverse_list = list(view_db)
                     reverse_list.reverse()
-                    for butt_ons in reverse_list:
+                    for data_count_n, butt_ons in enumerate(reverse_list, start=1):
                         if data_count_n > 15:
                             view_db.pop(butt_ons, None)
-                        data_count_n += 1
-
                     with open(inline_db_path, "w") as data_file:
                         ujson.dump(view_db, data_file)
 
@@ -1044,52 +1041,51 @@ if userge.has_bot:
                                     )
                                 )
 
-            if str_y[0].lower() == "stylish":
-                if len(str_y) == 2:
-                    results = []
-                    input_text = str_y[1]
-                    font_names = [
-                        "serif",
-                        "sans",
-                        "sans_i",
-                        "serif_i",
-                        "medi_b",
-                        "medi",
-                        "double",
-                        "cursive_b",
-                        "cursive",
-                        "bigsmall",
-                        "reverse",
-                        "circle",
-                        "circle_b",
-                        "mono",
-                        "square_b",
-                        "square",
-                        "smoth",
-                        "goth",
-                        "wide",
-                        "web",
-                        "weeb",
-                        "weeeb",
-                    ]
-                    for f_name in font_names:
-                        styled_str = await font_gen(f_name, input_text)
-                        results.append(
-                            InlineQueryResultArticle(
-                                title=f_name.upper(),
-                                input_message_content=InputTextMessageContent(
-                                    styled_str
-                                ),
-                                description=styled_str,
-                            )
+            if str_y[0].lower() == "stylish" and len(str_y) == 2:
+                results = []
+                input_text = str_y[1]
+                font_names = [
+                    "serif",
+                    "sans",
+                    "sans_i",
+                    "serif_i",
+                    "medi_b",
+                    "medi",
+                    "double",
+                    "cursive_b",
+                    "cursive",
+                    "bigsmall",
+                    "reverse",
+                    "circle",
+                    "circle_b",
+                    "mono",
+                    "square_b",
+                    "square",
+                    "smoth",
+                    "goth",
+                    "wide",
+                    "web",
+                    "weeb",
+                    "weeeb",
+                ]
+                for f_name in font_names:
+                    styled_str = await font_gen(f_name, input_text)
+                    results.append(
+                        InlineQueryResultArticle(
+                            title=f_name.upper(),
+                            input_message_content=InputTextMessageContent(
+                                styled_str
+                            ),
+                            description=styled_str,
                         )
-                    await inline_query.answer(
-                        results=results,
-                        cache_time=1,
-                        switch_pm_text="Available Commands",
-                        switch_pm_parameter="inline",
                     )
-                    return
+                await inline_query.answer(
+                    results=results,
+                    cache_time=1,
+                    switch_pm_text="Available Commands",
+                    switch_pm_parameter="inline",
+                )
+                return
 
             if str_x[0].lower() == "secret" and len(str_x) == 3:
                 user_name = str_x[1]

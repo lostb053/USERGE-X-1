@@ -126,7 +126,7 @@ class Bot_Alive:
 
     @staticmethod
     def alive_info():
-        alive_info = f"""
+        return f"""
 <b>[USERGE-X](https://telegram.dog/x_xtests)  is Up and Running.
 
   Python</b> :                 🐍  <code>v{versions.__python_version__}</code>
@@ -135,7 +135,6 @@ class Bot_Alive:
 
 ⚙  <b>Mode  ➥  {Bot_Alive._get_mode()}</b>
 """
-        return alive_info
 
     @staticmethod
     def _get_mode() -> str:
