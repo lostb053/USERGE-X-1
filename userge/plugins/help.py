@@ -1073,9 +1073,7 @@ if userge.has_bot:
                     results.append(
                         InlineQueryResultArticle(
                             title=f_name.upper(),
-                            input_message_content=InputTextMessageContent(
-                                styled_str
-                            ),
+                            input_message_content=InputTextMessageContent(styled_str),
                             description=styled_str,
                         )
                     )
