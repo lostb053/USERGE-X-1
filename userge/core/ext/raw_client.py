@@ -90,11 +90,8 @@ class RawClient(Client):
                             _LOG.debug(_LOG_STR, to_sl, key)
                         await asyncio.sleep(to_sl)
                         now += to_sl
-                count = 0
                 counter = floor(now - 1)
-                for r in self.REQ_LOGS.values():
-                    if r.has and r.last > counter:
-                        count += 1
+                count = sum(bool(r.has and r.last > counter) for r in self.REQ_LOGS.values())
                 if count > 25:
                     _LOG.info(_LOG_STR, 1, key)
                     sleep(1)
