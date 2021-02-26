@@ -38,7 +38,6 @@ from .bot.utube_inline import (
     result_formatter,
     ytsearch_data,
 )
-from .fun.stylish import font_gen
 from .misc.redditdl import reddit_thumb_link
 from .utils.notes import get_inote
 
@@ -1018,50 +1017,6 @@ if userge.has_bot:
                                         reply_markup=buttonsx,
                                     )
                                 )
-
-            if str_y[0].lower() == "stylish" and len(str_y) == 2:
-                results = []
-                input_text = str_y[1]
-                font_names = [
-                    "serif",
-                    "sans",
-                    "sans_i",
-                    "serif_i",
-                    "medi_b",
-                    "medi",
-                    "double",
-                    "cursive_b",
-                    "cursive",
-                    "bigsmall",
-                    "reverse",
-                    "circle",
-                    "circle_b",
-                    "mono",
-                    "square_b",
-                    "square",
-                    "smoth",
-                    "goth",
-                    "wide",
-                    "web",
-                    "weeb",
-                    "weeeb",
-                ]
-                for f_name in font_names:
-                    styled_str = await font_gen(f_name, input_text)
-                    results.append(
-                        InlineQueryResultArticle(
-                            title=f_name.upper(),
-                            input_message_content=InputTextMessageContent(styled_str),
-                            description=styled_str,
-                        )
-                    )
-                await inline_query.answer(
-                    results=results,
-                    cache_time=1,
-                    switch_pm_text="Available Commands",
-                    switch_pm_parameter="inline",
-                )
-                return
 
             if str_x[0].lower() in ["secret", "troll"] and len(str_x) == 3:
                 user_name = str_x[1]
