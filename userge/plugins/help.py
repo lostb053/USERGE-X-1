@@ -38,7 +38,6 @@ from .bot.utube_inline import (
     result_formatter,
     ytsearch_data,
 )
-from .misc.redditdl import reddit_thumb_link
 from .utils.notes import get_inote
 
 CHANNEL = userge.getCLogger(__name__)
